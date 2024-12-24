@@ -14,6 +14,13 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Update is called once per frame
+    private void Update()
+    {
+        if(Input.GetButtonDown("Jump"))
+        {
+            rb.AddForce(Vector3.up * 10, ForceMode.Impulse);
+        }
+    }
     void FixedUpdate()
     {
 
@@ -21,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
         direccionMovimiento = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
         if (direccionMovimiento.magnitude != 0 )
         {
-            //transform.forward = new Vector3(Camera.main.transform.forward.x, transform.forward.y, Camera.main.transform.forward.z);
+            transform.forward = new Vector3(Camera.main.transform.forward.x, transform.forward.y, Camera.main.transform.forward.z);
             rb.AddRelativeForce(direccionMovimiento * movementSpeed, ForceMode.Impulse);
         }
         else

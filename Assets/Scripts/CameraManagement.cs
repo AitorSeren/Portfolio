@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
 public class CameraManagement : MonoBehaviour
 {
     [SerializeField] Transform target;
+    [SerializeField, Range(0,1)] float highValue = 0.0f;
     public float rotationSpeed = 1.0f;
     public float movementSpeed = 6.0f;
     public float maxDistance = 5f;
@@ -17,82 +19,28 @@ public class CameraManagement : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        distance = transform.position - target.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        FocusAtPlayer();
-        //RotateAroundPlayer();
-        //CalculateRotationAroundPlayer();
-    }
-
-
-    void FocusAtPlayer()
-    {
         transform.LookAt(target.position);
-
-        distance = transform.position - target.position;
-        float distanceX = Mathf.Clamp(distance.x, -maxDistance, maxDistance);
-        //float distanceY = Mathf.Clamp(distance.y, -maxDistance, maxDistance);
-        float distanceZ = Mathf.Clamp(distance.z, -maxDistance, maxDistance);
-        distance = new Vector3(distanceX, distance.y, distanceZ);
-        transform.position = distance;
-        if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
-        {
-            transform.RotateAround(target.position, Vector3.up, Input.GetAxis("Mouse X") * Time.deltaTime * angleX);
-            transform.RotateAround(target.position, Vector3.right, Input.GetAxis("Mouse Y") * Time.deltaTime * angleY);
-        }
-
-
-        /*if ((protagonist.position - transform.position).magnitude > distanciaMax*3)
-        {
-            
-            Vector3 direccion = new Vector3(protagonist.position.x - transform.position.x, 0, protagonist.position.z - transform.position.z);
-            transform.position = direccion +transform.position;
-        }*/
+        maxDistance = Mathf.Clamp(maxDistance + Input.GetAxis("Mouse ScrollWheel") * -1, 0, 10);
+        RotateAroundPlayer();
     }
 
     void RotateAroundPlayer()
     {
-        float angleH = Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
-        float angleV = Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime;
-        transform.RotateAround(target.position, Vector3.up, angleH);
-        transform.RotateAround(target.position, Vector3.right, angleV);
-    }
-    /*
-    void CalculateRotationAroundPlayer()
-    {
-        transform.LookAt(target.position);
+        transform.RotateAround(target.position, Vector3.up, Input.GetAxis("Mouse X") * Time.deltaTime * angleX);
+        transform.RotateAround(target.position, Vector3.right, -1 * Input.GetAxis("Mouse Y") * Time.deltaTime * angleY);
 
         distance = transform.position - target.position;
-        float maxPointX,
-              maxPointZ;
-
-        float distanceX,
-              distanceZ;
-
-        if(Mathf.Abs(distance.z) >= maxDistance)
+        distance.Normalize();
+        if(Input.GetAxis("Vertical") != 0)
         {
-            distanceZ = Mathf.Clamp(distance.z, -maxDistance, maxDistance);
-            maxPointX = Mathf.Sqrt(Mathf.Pow(maxDistance, 2) + Mathf.Pow((distanceZ - target.position.z), 2)) + target.position.x;
-            distanceX = Mathf.Clamp(distance.x, -maxPointX, maxPointX);
+            distance.y = Mathf.Clamp(distance.y + (1 * Time.deltaTime), 0, highValue);
         }
-        else if (Mathf.Abs(distance.x) >= maxDistance)
-        {
-            distanceX = Mathf.Clamp(distance.x, -maxDistance, maxDistance);
-            maxPointZ = Mathf.Sqrt(Mathf.Pow(maxDistance, 2) + Mathf.Pow((distanceX - target.position.x), 2)) + target.position.z;
-            distanceZ = Mathf.Clamp(distance.z, -maxPointZ, maxPointZ);
-        }
-        else
-        {
-            distanceX = Mathf.Clamp(distance.x, -maxDistance, maxDistance);
-            distanceZ = Mathf.Clamp(distance.z, -maxDistance, maxDistance);
-        }
-
-
-        //float distanceY = Mathf.Clamp(distance.y, -maxDistance, maxDistance);
-        distance = new Vector3(distanceX, 0, distanceZ);
-        transform.position = distance;
-    }*/
+        transform.position = target.position + distance * maxDistance;
+    }
 }
