@@ -7,30 +7,30 @@ using Utilities;
 
 public class PlatformMovement : MonoBehaviour
 {
-    public int type = 0;
-    public float movementSpeed, timeToStartMovement, movementTime;
-    Timer timer;
-    Vector3 startingPosition;
-    float changeDirection = 1;
+    public int type = 0;                                                                // Platform type that defines the movement pattern
+    public float movementSpeed, timeToStartMovement, movementTime;                      // Platform movement parameters.
+    Timer timer;                                                                        // Timer for the platform.
+    Vector3 startingPosition;                                                           // Vector3 that will set the starting position
+    int changeDirection = 1;                                                            // int that will change directions if necessary.
 
     // Start is called before the first frame update
     void Start()
     {
-        timer = new CountdownTimer(movementTime);
-        timer.OnTimerStop = ChangeDirection;
-        startingPosition = transform.position;
-        PlatformType();
+        timer = new CountdownTimer(movementTime);                                       //  CountdownTimer that will change direction when finishes
+        timer.OnTimerStop = ChangeDirection;                                            //  Function called when the timer finishes
+        startingPosition = transform.position;                                          //  We store the starting position
+        PlatformType();                                                                 //  We call the function that will start the coroutine movement
     }
 
     // Update is called once per frame
     void Update()
     {
-        timer.Tick(Time.deltaTime);
+        timer.Tick(Time.deltaTime);                                                     //  Tick from the timer
     }
 
     private void PlatformType()
     {
-        switch(type)
+        switch(type)                                                                    //  The type decides the movement pattern
         {
             case 1:
 
@@ -48,43 +48,30 @@ public class PlatformMovement : MonoBehaviour
         }
     }
 
-    IEnumerator PlatformScheduleDefault()
+    IEnumerator PlatformScheduleDefault()                                               // The default movement
     {
 
-        yield return new WaitForSeconds(timeToStartMovement);
-        timer.Start();
+        yield return new WaitForSeconds(timeToStartMovement);                           //  We wait for a specific time
+        timer.Start();                                                                  //  The timer starts
         while (true)
         {      
-            PlatformMoves(Vector3.up * changeDirection * movementSpeed);
+            PlatformMoves(Vector3.up * changeDirection * movementSpeed);                //  The platform moves and updates frame.
             yield return null;
         }
     }
 
     void ChangeDirection()
     {
-        changeDirection = -changeDirection;
+        changeDirection = -changeDirection;                                             //  We change the direction and restart the timer
         timer.Start();
     }
 
     private void PlatformMoves(Vector3 movement)
     {
-        transform.Translate(movement * ((-1 * Mathf.Pow((timer.Progress() * 2) -1, 2f)) +1) * Time.deltaTime, Space.World);
+        transform.Translate(movement * ((-1 * Mathf.Pow((timer.Progress() * 2) -1, 2f)) +1) * Time.deltaTime, Space.World);     // This method moves th platform in a smooth way using the function f(y) = -(2x-1)^2 + 1
+                                                                                                                                // This function is equal to 0 at the start, 0.5f at half and 1 at the end, but has a curve draw on it
+                                                                                                                                // This will make the platform movement more natural and smooth
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.tag == "Player")
-        {
-            collision.transform.parent = transform;
-        }
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.tag == "Player")
-        {
-            collision.transform.parent = null;
-        }
-    }
 }
 

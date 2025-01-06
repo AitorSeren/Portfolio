@@ -381,6 +381,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7413344840680693326, guid: cc91c8ba8b9a34f4d99e70d721f60b64, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 615d23103a2f92d4c83bc1692efc025c, type: 2}
+    - target: {fileID: 7413344840680693326, guid: cc91c8ba8b9a34f4d99e70d721f60b64, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: b42af12458f0d5a448201df6200379a7, type: 2}
     - target: {fileID: 7647134206250791342, guid: cc91c8ba8b9a34f4d99e70d721f60b64, type: 3}
       propertyPath: m_Name
       value: PlayerCharacter
@@ -405,6 +413,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7647134206250791342, guid: cc91c8ba8b9a34f4d99e70d721f60b64, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1763080483}
+    - targetCorrespondingSourceObject: {fileID: 7647134206250791342, guid: cc91c8ba8b9a34f4d99e70d721f60b64, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1763080486}
   m_SourcePrefab: {fileID: 100100000, guid: cc91c8ba8b9a34f4d99e70d721f60b64, type: 3}
 --- !u!1 &467381441
 GameObject:
@@ -436,8 +447,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6894dcd9303b8cb4e92673f0c78d1ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  smoothTime: 0.3
-  chameraHeight: 1.5
+  smoothTime: 0.2
 --- !u!136 &467381443
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -457,10 +467,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.4
-  m_Height: 5
+  m_Radius: 2
+  m_Height: 4
   m_Direction: 1
-  m_Center: {x: 0, y: -0.5, z: 0}
+  m_Center: {x: 0, y: 0.75, z: 0}
 --- !u!4 &467381444
 Transform:
   m_ObjectHideFlags: 0
@@ -678,9 +688,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 467381444}
-  highValue: 0.333
-  rotationSpeed: 1
-  movementSpeed: 6
+  maxDistance: 5
+  minDistance: 1
+  cameraDisplacementY: 1.5
+  invertAxisY: 0
+  invertAxisX: 1
   minVerAngle: -45
   maxVerAngle: 45
 --- !u!54 &963194230
@@ -1072,10 +1084,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e73bb7dcd110db34e8e1a4d412d13fd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundDistance: 0.031
+  groundDistance: 0.04
   groundLayers:
     serializedVersion: 2
     m_Bits: 8
+--- !u!114 &1763080486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1763080476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a99c32bfd2b7737488e3a32bcc593aac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1823264106
 GameObject:
   m_ObjectHideFlags: 0
