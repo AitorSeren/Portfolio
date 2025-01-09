@@ -21,7 +21,7 @@ public class CameraManagement : MonoBehaviour
 
     private float angleX = 0;                                           //      Float that stores the current rotation on X axis
     private float angleY = 0;                                           //      Float that stores the current rotation on Y axis
-    private float distance = 5f;                                     //      Distance from the camera to the player.
+    private float distance = 5f;                                        //      Distance from the camera to the player.
 
     // Start is called before the first frame update
     void Awake()

@@ -19,7 +19,8 @@ public class PlayerMovement : MonoBehaviour
     static readonly int Speed = Animator.StringToHash("Speed");                                                                             //  Some Static ints to communicate with the animator component
     static readonly int isJumping = Animator.StringToHash("isJumping");
     static readonly int isGrounded = Animator.StringToHash("isGrounded");
-    
+    static readonly int isDoubleJump = Animator.StringToHash("isDoubleJump");
+
 
     void Awake()
     {
@@ -51,10 +52,12 @@ public class PlayerMovement : MonoBehaviour
             if(groundChecker.isGrounded)                                                                                                            //  If the jump was possible and the character was touching the ground
             {                                                                                                                                       //  the character can use the double jump.
                 doubleJump = true;
+                animator.SetBool(isDoubleJump, false);
             }
             else                                                                                                                                    //  If the character wasn't touching the ground, then the character 
             {                                                                                                                                       //  can't double jump after this jump.
                 doubleJump = false;
+                animator.SetBool(isDoubleJump, true);
             }
             animator.SetBool(isJumping, true);                                                                                                      
             StartCoroutine(JumpAction());                                                                                                           //  Coroutine for the jump
